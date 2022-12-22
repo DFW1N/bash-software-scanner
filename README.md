@@ -36,6 +36,8 @@ Here are some examples of valid package URLs:
     https://example.com/package.xz
     https://example.com/package.rar
     https://example.com/package.exe
+    file:///path/to/local/package-2.0.tar.bz2
+    ftp://ftp.example.com/package-1.1.zip
 
 ---
 
