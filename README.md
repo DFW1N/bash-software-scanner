@@ -93,6 +93,6 @@ Time: 11.216 sec (0 m 11 s)
 Start Date: 2022:12:22 13:01:10
 End Date:   2022:12:22 13:01:21
 [✔] No threats detected in main.zip
-[✔] Deleting temporary directoy main
+[✔] Deleting temporary directoy package
 [✔] The package main has been extracted.
 ```
