@@ -74,13 +74,32 @@ extension=$(echo "$package_url" | sed -E 's/.*\/(.*)\.(tar\.gz|zip|bz2|[^.]*)$/\
 $download_cmd "$package_name.$extension" "$package_url"
 
 # Scan the package for viruses
-clamscan -v "$package_name.$extension"
+#clamscan -v "$package_name.$extension"
 
 # Check the exit code of the scan
 if [ $? -eq 0 ]; then
   # The scan was successful, extract the package
   if [[ "$extension" == "tar.gz" ]]; then
+    mkdir -p /tmp/package
+    tar -xzvf "$package_name" -C /tmp/package
+
+    # Scan the extracted files using ClamAV
+    clamscan -v -r -i /tmp/package
+
+    # Check the exit code of the scan
+    if [ $? -eq 0 ]; then
+        # No threats detected
+        echo -e "\e[1;32m[✔] No threats detected in $package_name\e[0m"
+    else
+        # Threats detected
+        echo -e "\e[1;31m[✘] Threats detected in $package_name\e[0m"
+    fi
+
+    # Clean up the temporary directory
+    rm -rf /tmp/package
+
     tar -xzf "$package_name.$extension"
+
   elif [[ "$extension" == "zip" ]]; then
     # Check if unzip is installed
     if ! [ -x "$(command -v unzip)" ]; then
@@ -99,11 +118,58 @@ if [ $? -eq 0 ]; then
         fi
       fi
     fi
-    unzip "$package_name.$extension"
+    # Extract the contents of the .zip file into a temporary directory
+    mkdir -p /tmp/package
+    unzip "$package_name.$extension" -d /tmp/package
+
+    # Scan the extracted files using ClamAV
+    clamscan -r -i /tmp/package
+
+    # Check the exit code of the scan
+    if [ $? -eq 0 ]; then
+        # No threats detected
+        echo -e "\e[1;32m[✔] No threats detected in $package_name.$extension\e[0m"
+    else
+        # Threats detected
+        echo -e "\e[1;31m[✘] Threats detected in $package_name.$extension\e[0m"
+    fi
+
+    # Clean up the temporary directory
+    rm -rf /tmp/package
+    echo -e "\e[1;32m[✔] Deleting temporary directoy $package_name.$extension\e[0m"
+
   elif [[ "$extension" == "bz2" ]]; then
-    tar -xjf "$package_name.$extension"
+    # Decompress the .bz2 file
+    bzip2 -d "$package_name.$extension"
+
+    # Scan the decompressed file using ClamAV
+    clamscan -i "$package_name"
+
+    # Check the exit code of the scan
+    if [ $? -eq 0 ]; then
+        # No threats detected
+        echo -e "\e[1;32m[✔] No threats detected in $package_name\e[0m"
+    else
+        # Threats detected
+        echo -e "\e[1;31m[✘] Threats detected in $package_name\e[0m"
+    fi
+
   elif [[ "$extension" == "xz" ]]; then
-    tar -xJf "$package_name.$extension"
+    # Decompress the .xz file
+    xz -d "$package_name.$extension"
+
+    # Scan the decompressed file using ClamAV
+    clamscan -i "$package_name"
+
+    # Check the exit code of the scan
+    if [ $? -eq 0 ]; then
+        # No threats detected
+        echo -e "\e[1;32m[✔] No threats detected in $package_name\e[0m"
+    else
+        # Threats detected
+        echo -e "\e[1;31m[✘] Threats detected in $package_name\e[0m"
+    fi
+
   elif [[ "$extension" == "rar" ]]; then
    # Check if unrar is installed
     if ! [ -x "$(command -v unrar)" ]; then
@@ -122,7 +188,22 @@ if [ $? -eq 0 ]; then
         fi
       fi
     fi
-    unrar x "$package_name.$extension"
+    # Extract the contents of the .rar file
+    mkdir "$package_name"
+    unrar x "$package_name.$extension" "$package_name"
+
+    # Scan the extracted files using ClamAV
+    clamscan -r -i "$package_name"
+
+    # Check the exit code of the scan
+    if [ $? -eq 0 ]; then
+        # No threats detected
+        echo -e "\e[1;32m[✔] No threats detected in $package_name\e[0m"
+    else
+        # Threats detected
+        echo -e "\e[1;31m[✘] Threats detected in $package_name\e[0m"
+    fi
+
   elif [[ "$extension" == "exe" ]]; then
     # Check if wine is installed
     if ! [ -x "$(command -v wine)" ]; then
@@ -143,13 +224,38 @@ if [ $? -eq 0 ]; then
     fi
     # Extract the package using wine
     wine "$package_name.$extension"
+
+    # Scan the .exe file using ClamAV
+    clamscan -i "$package_name.$extension"
+
+    # Check the exit code of the scan
+    if [ $? -eq 0 ]; then
+        # No threats detected
+        echo -e "\e[1;32m[✔] No threats detected in $package_name.$extension\e[0m"
+    else
+        # Threats detected
+        echo -e "\e[1;31m[✘] Threats detected in $package_name.$extension\e[0m"
+    fi
   else
-    # Unsupported file extension, print an error message with a red cross icon
-    echo -e "\033[31m✖\033[0m Error: Unsupported file extension '$extension'."
-    exit 1
+    # Scan the file using ClamAV
+    clamscan -v -i "$package_name.$extension"
+
+    # Check the exit code of the scan
+    if [ $? -eq 0 ]; then
+        # No threats detected
+        echo -e "\e[1;32m[✔] No threats detected in $package_name.$extension\e[0m"
+    else
+        # Threats detected
+        echo -e "\e[1;31m[✘] Threats detected in $package_name.$extension\e[0m"
+    fi
+    if [ $? -eq 1 ]; then
+        # Unsupported file extension, print an error message with a red cross icon
+        echo -e "\033[31m✖\033[0m Error: Unsupported file extension '$extension'."
+        exit 1
+    fi
   fi
   # Print a success message with a green checkmark icon
-  echo -e "\033[32m✔\033[0m The package $package_name has been extracted."
+  echo -e "\033[32m[✔]\033[0m The package $package_name has been extracted."
 else
   # The scan failed, delete the package
   rm "$package_name.$extension"
