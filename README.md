@@ -21,7 +21,7 @@ This script is a simple tool that allows you to download a package from a URL, s
 To use the script, simply provide the URL of the package as the first command line argument:
 
 ```bash
-./download.sh https://example.com/package.tar.gz
+./software-scanner.sh https://example.com/package.tar.gz
 ```
 
 ---
