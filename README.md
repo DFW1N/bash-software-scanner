@@ -58,37 +58,42 @@ Example of an output that has been scanned and ClamAV has not found any viruses 
 
 ```bash
 ----------- SCAN SUMMARY -----------
-Known viruses: 8646208
-Engine version: 0.103.6
-Scanned directories: 0
-Scanned files: 1
-Infected files: 0
-Data scanned: 0.20 MB
-Data read: 0.03 MB (ratio 6.25:1)
-Time: 12.460 sec (0 m 12 s)
-Start Date: 2022:12:22 11:28:30
-End Date:   2022:12:22 11:28:42
 Archive:  main.zip
 80704b5a848c87e35814a2dc4d0a30a6cc7bf139
-   creating: Villain-main/
-   creating: Villain-main/Core/
-  inflating: Villain-main/Core/common.py  
-   creating: Villain-main/Core/payload_templates/
-   creating: Villain-main/Core/payload_templates/linux/
-  inflating: Villain-main/Core/payload_templates/linux/http_payload  
-  inflating: Villain-main/Core/payload_templates/linux/https_payload  
-   creating: Villain-main/Core/payload_templates/windows/
-  inflating: Villain-main/Core/payload_templates/windows/disable_ssl_check  
-  inflating: Villain-main/Core/payload_templates/windows/http_payload  
-  inflating: Villain-main/Core/payload_templates/windows/http_payload_outfile  
-  inflating: Villain-main/Core/payload_templates/windows/https_payload  
-  inflating: Villain-main/Core/payload_templates/windows/https_payload_outfile  
-  inflating: Villain-main/Core/settings.py  
-  inflating: Villain-main/Core/villain_core.py  
-  inflating: Villain-main/LICENSE.md  
-  inflating: Villain-main/README.md  
-  inflating: Villain-main/Usage_Guide.md  
-  inflating: Villain-main/Villain.py  
-  inflating: Villain-main/requirements.txt  
-✔ The package main has been extracted.
+   creating: /tmp/package/Villain-main/
+   creating: /tmp/package/Villain-main/Core/
+  inflating: /tmp/package/Villain-main/Core/common.py  
+   creating: /tmp/package/Villain-main/Core/payload_templates/
+   creating: /tmp/package/Villain-main/Core/payload_templates/linux/
+  inflating: /tmp/package/Villain-main/Core/payload_templates/linux/http_payload  
+  inflating: /tmp/package/Villain-main/Core/payload_templates/linux/https_payload  
+   creating: /tmp/package/Villain-main/Core/payload_templates/windows/
+  inflating: /tmp/package/Villain-main/Core/payload_templates/windows/disable_ssl_check  
+  inflating: /tmp/package/Villain-main/Core/payload_templates/windows/http_payload  
+  inflating: /tmp/package/Villain-main/Core/payload_templates/windows/http_payload_outfile  
+  inflating: /tmp/package/Villain-main/Core/payload_templates/windows/https_payload  
+  inflating: /tmp/package/Villain-main/Core/payload_templates/windows/https_payload_outfile  
+  inflating: /tmp/package/Villain-main/Core/settings.py  
+  inflating: /tmp/package/Villain-main/Core/villain_core.py  
+  inflating: /tmp/package/Villain-main/LICENSE.md  
+  inflating: /tmp/package/Villain-main/README.md  
+  inflating: /tmp/package/Villain-main/Usage_Guide.md  
+  inflating: /tmp/package/Villain-main/Villain.py  
+  inflating: /tmp/package/Villain-main/requirements.txt  
+
+----------- SCAN SUMMARY -----------
+Known viruses: 8646208
+Engine version: 0.103.6
+Scanned directories: 6
+Scanned files: 15
+Infected files: 0
+Data scanned: 0.16 MB
+Data read: 0.09 MB (ratio 1.91:1)
+Time: 11.216 sec (0 m 11 s)
+Start Date: 2022:12:22 13:01:10
+End Date:   2022:12:22 13:01:21
+[✔] No threats detected in main.zip
+This is a test
+[✔] Deleting temporary directoy main.zip
+[✔] The package main has been extracted.
 ```
